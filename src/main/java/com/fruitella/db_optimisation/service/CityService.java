@@ -2,12 +2,13 @@ package com.fruitella.db_optimisation.service;
 
 import com.fruitella.db_optimisation.DAO.CityDaoIml;
 import com.fruitella.db_optimisation.connection.DbConnection;
-import com.fruitella.db_optimisation.entity.City;
-import com.fruitella.db_optimisation.entity.CountryLanguage;
+import com.fruitella.db_optimisation.dbEntity.City;
+import com.fruitella.db_optimisation.dbEntity.CountryLanguage;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,20 +22,32 @@ public class CityService {
         cityDao = new CityDaoIml(sessionFactory);
     }
 
-    public List<City> getItems(int offset, int limit) {
+    private List<City> getItems(int offset, int limit) {
         return cityDao.getItems(offset, limit);
     }
 
-    public int getTotalCount() {
+    private int getTotalCount() {
         return cityDao.getTotalCount();
     }
 
-    public City getById(Integer cityId) {
+    private City getById(Integer cityId) {
         return cityDao.getById(cityId);
     }
 
     public List<City> fetchData(int step) {
-        return cityDao.fetchData(step);
+        List<City> getAllCities = new ArrayList<>();
+
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            int totalCount = getTotalCount();
+
+            for (int i = 0; i < totalCount; i += step) {
+                getAllCities.addAll(getItems(i, step));
+            }
+
+            transaction.commit();
+            return getAllCities;
+        }
     }
 
     public void testMysqlData(List<Integer> ids) {
@@ -42,7 +55,7 @@ public class CityService {
             Transaction transaction = session.beginTransaction();
 
             for (Integer id : ids) {
-                City city = cityDao.getById(id);
+                City city = getById(id);
                 Set<CountryLanguage> languages = city.getCountry().getLanguages();
             }
 

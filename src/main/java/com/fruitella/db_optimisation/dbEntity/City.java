@@ -1,4 +1,4 @@
-package com.fruitella.db_optimisation.entity;
+package com.fruitella.db_optimisation.dbEntity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

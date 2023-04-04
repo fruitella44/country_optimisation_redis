@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fruitella.db_optimisation.connection.DbConnection;
 import com.fruitella.db_optimisation.connection.RedisConnection;
-import com.fruitella.db_optimisation.entity.City;
-import com.fruitella.db_optimisation.entity.Country;
-import com.fruitella.db_optimisation.entity.CountryLanguage;
-import com.fruitella.db_optimisation.redis.CityCountry;
-import com.fruitella.db_optimisation.redis.Language;
+import com.fruitella.db_optimisation.dbEntity.City;
+import com.fruitella.db_optimisation.dbEntity.Country;
+import com.fruitella.db_optimisation.dbEntity.CountryLanguage;
+import com.fruitella.db_optimisation.redisEntity.CityCountry;
+import com.fruitella.db_optimisation.redisEntity.Language;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStringCommands;
@@ -88,8 +88,8 @@ public class RedisService {
                 String value = sync.get(String.valueOf(id));
                 try {
                     mapper.readValue(value, CityCountry.class);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+                } catch (JsonProcessingException exception) {
+                    exception.printStackTrace();
                 }
             }
         }

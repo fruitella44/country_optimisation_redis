@@ -1,4 +1,4 @@
-package com.fruitella.db_optimisation.redis;
+package com.fruitella.db_optimisation.redisEntity;
 
 import lombok.*;
 

@@ -1,8 +1,8 @@
 package com.fruitella.db_optimisation.connection;
 
-import com.fruitella.db_optimisation.entity.City;
-import com.fruitella.db_optimisation.entity.Country;
-import com.fruitella.db_optimisation.entity.CountryLanguage;
+import com.fruitella.db_optimisation.dbEntity.City;
+import com.fruitella.db_optimisation.dbEntity.Country;
+import com.fruitella.db_optimisation.dbEntity.CountryLanguage;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

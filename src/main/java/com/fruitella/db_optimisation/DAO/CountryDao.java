@@ -1,6 +1,6 @@
 package com.fruitella.db_optimisation.DAO;
 
-import com.fruitella.db_optimisation.entity.Country;
+import com.fruitella.db_optimisation.dbEntity.Country;
 
 import java.util.List;
 

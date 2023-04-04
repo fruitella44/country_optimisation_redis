@@ -1,4 +1,4 @@
-package com.fruitella.db_optimisation.entity;
+package com.fruitella.db_optimisation.dbEntity;
 
 public enum Continent {
     ASIA,

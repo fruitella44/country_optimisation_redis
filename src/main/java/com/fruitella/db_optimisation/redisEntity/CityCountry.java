@@ -1,6 +1,6 @@
-package com.fruitella.db_optimisation.redis;
+package com.fruitella.db_optimisation.redisEntity;
 
-import com.fruitella.db_optimisation.entity.Continent;
+import com.fruitella.db_optimisation.dbEntity.Continent;
 import lombok.*;
 
 import java.math.BigDecimal;
