@@ -1,4 +1,4 @@
-package com.fruitella.db_optimisation.domain;
+package com.fruitella.db_optimisation.DAO;
 
 import com.fruitella.db_optimisation.entity.City;
 import lombok.AllArgsConstructor;
@@ -12,8 +12,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class CityDaoIml implements CityDao {
-
-    private final SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     @Override
     public List<City> getItems(int offset, int limit) {
@@ -36,6 +35,15 @@ public class CityDaoIml implements CityDao {
 
             transaction.commit();
             return Math.toIntExact(query.uniqueResult());
+        }
+    }
+
+    @Override
+    public City getById(Integer cityId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<City> query = session.createQuery("select c from City c join fetch c.country where c.id = :ID", City.class);
+            query.setParameter("ID", cityId);
+            return query.getSingleResult();
         }
     }
 

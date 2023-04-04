@@ -6,7 +6,7 @@ import com.fruitella.db_optimisation.entity.CountryLanguage;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class DbConnectionSessionFactory {
+public class DbConnection {
 
     private static final SessionFactory sessionFactory = buildSessionFactory();
 

@@ -1,51 +1,48 @@
 package com.fruitella.db_optimisation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fruitella.db_optimisation.domain.CityDaoIml;
-import com.fruitella.db_optimisation.domain.CountryDaoIml;
-import com.fruitella.db_optimisation.connection.DbConnectionSessionFactory;
+import com.fruitella.db_optimisation.connection.DbConnection;
 import com.fruitella.db_optimisation.entity.City;
-import io.lettuce.core.RedisClient;
-import org.hibernate.SessionFactory;
+import com.fruitella.db_optimisation.redis.CityCountry;
+import com.fruitella.db_optimisation.service.CityService;
+import com.fruitella.db_optimisation.service.CountryService;
+import com.fruitella.db_optimisation.service.RedisService;
 
 import java.util.List;
 
-import static java.util.Objects.nonNull;
-
 public class Main {
-    private final SessionFactory sessionFactory;
-    private RedisClient redisClient;
-    private final ObjectMapper mapper;
-    private final CityDaoIml cityDao;
-    private final CountryDaoIml countryDAO;
+    private final CityService cityService;
+    private final CountryService countryService;
+    private RedisService redisService;
     private final int STEP = 500;
+    private final List<Integer> RANDOM_CITES = List.of(3, 2545, 123, 4, 189, 89, 3458, 1189, 10, 102);
 
     public Main() {
-        sessionFactory = DbConnectionSessionFactory.getSessionFactory();
-//        redisClient = preparedRedicClient();
-        mapper = new ObjectMapper();
-        cityDao = new CityDaoIml(sessionFactory);
-        countryDAO = new CountryDaoIml(sessionFactory);
+        cityService = new CityService();
+        countryService = new CountryService();
+        redisService = new RedisService();
 
     }
 
 
     public static void main(String[] args) {
         Main main = new Main();
-        List<City> allCities = main.cityDao.fetchData(main.STEP);
-        for (City city: allCities) {
-            System.out.println(city.getName());
-        }
-        main.shutdown();
-    }
+        List<City> allCities = main.cityService.fetchData(main.STEP);
+        List<CityCountry> preparedData = main.redisService.transformData(allCities);
+        main.redisService.pushToRedis(preparedData);
+        DbConnection.getSessionFactory().getCurrentSession().close();
 
-    private void shutdown() {
-        if (nonNull(DbConnectionSessionFactory.getSessionFactory())) {
-            DbConnectionSessionFactory.getSessionFactory().close();
-        }
-        if (nonNull(redisClient)) {
-            redisClient.shutdown();
-        }
-    }
+        long startRedis = System.currentTimeMillis();
+        main.redisService.testRedisData(main.RANDOM_CITES);
+        long stopRedis = System.currentTimeMillis();
 
+        long startMysql = System.currentTimeMillis();
+        main.cityService.testMysqlData(main.RANDOM_CITES);
+        long stopMysql = System.currentTimeMillis();
+
+        System.out.printf("%s:\t%d ms\n", "Redis", (stopRedis - startRedis));
+        System.out.printf("%s:\t%d ms\n", "MySQL", (stopMysql - startMysql));
+
+        main.redisService.shutdown();
+
+    }
 }

@@ -59,7 +59,7 @@ public class Country {
     @Enumerated(EnumType.ORDINAL)
     private Continent continent;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "capital")
     private City city;
 

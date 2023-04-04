@@ -1,4 +1,4 @@
-package com.fruitella.db_optimisation.domain;
+package com.fruitella.db_optimisation.DAO;
 
 import com.fruitella.db_optimisation.entity.Country;
 
