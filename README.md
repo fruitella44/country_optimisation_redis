@@ -12,7 +12,7 @@
 * Logs write into file: "appLog.log" to directory: "/resources/logs" - removed from index git
 * Connection to MySql with "hibernate.cfg.xml" - removed from index git
 * Connection to Redis with: "url - localhost", "port - 6379"
-* Download: ![dump](https://javarush.com/downloads/ide/javarush/dump-hibernate-final.sql)
+* Download dump: https://javarush.com/downloads/ide/javarush/dump-hibernate-final.sql
 ------------------------------------
 * Used technologies:
   JDK-17, Maven, Hibernate-5, Criteria API, Docker, MySQL-8, Redis, Log4j2, Jackson, Lombok.
