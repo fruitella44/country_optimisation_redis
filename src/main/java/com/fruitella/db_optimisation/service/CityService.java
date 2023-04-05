@@ -4,9 +4,10 @@ import com.fruitella.db_optimisation.DAO.CityDaoIml;
 import com.fruitella.db_optimisation.connection.DbConnection;
 import com.fruitella.db_optimisation.dbEntity.City;
 import com.fruitella.db_optimisation.dbEntity.CountryLanguage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,23 +15,29 @@ import java.util.Set;
 
 
 public class CityService {
+
+    private static final Logger LOGGER = LogManager.getLogger(CityService.class);
     private final CityDaoIml cityDao;
     private final SessionFactory sessionFactory;
 
     public CityService() {
         sessionFactory = DbConnection.getSessionFactory();
         cityDao = new CityDaoIml(sessionFactory);
+        LOGGER.debug("Initialized session: [sessionFactory, cityDao]");
     }
 
     private List<City> getItems(int offset, int limit) {
+        LOGGER.debug("Call cityDao getItems");
         return cityDao.getItems(offset, limit);
     }
 
     private int getTotalCount() {
+        LOGGER.debug("Call cityDao getTotalCount");
         return cityDao.getTotalCount();
     }
 
     private City getById(Integer cityId) {
+        LOGGER.debug("Call cityDao getById");
         return cityDao.getById(cityId);
     }
 
@@ -38,28 +45,34 @@ public class CityService {
         List<City> getAllCities = new ArrayList<>();
 
         try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
+            session.beginTransaction();
+
+            LOGGER.debug("fetchData. Start transaction");
             int totalCount = getTotalCount();
 
             for (int i = 0; i < totalCount; i += step) {
                 getAllCities.addAll(getItems(i, step));
             }
+            LOGGER.debug("Call service method. Added step increment");
 
-            transaction.commit();
+            session.getTransaction().commit();
+            LOGGER.debug("fetchData. Commit transaction");
             return getAllCities;
         }
     }
 
     public void testMysqlData(List<Integer> ids) {
         try (Session session = sessionFactory.getCurrentSession()) {
-            Transaction transaction = session.beginTransaction();
+            session.beginTransaction();
+            LOGGER.debug("testMysqlData. Start transaction");
 
             for (Integer id : ids) {
                 City city = getById(id);
                 Set<CountryLanguage> languages = city.getCountry().getLanguages();
             }
 
-           transaction.commit();
+            session.getTransaction().commit();
+            LOGGER.debug("testMysqlData. Commit transaction");
         }
     }
 }
