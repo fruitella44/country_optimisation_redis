@@ -1,3 +1,5 @@
 .idea
 /target
 db_optimisation_redis.iml
+/src/main/resources/logs/applog.log
+/src/main/resources/hibernate.cfg.xml

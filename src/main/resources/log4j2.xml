@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration status="Debug">
+
+    <Appenders>
+        <RollingFile name="RollingFile" filename="E:/Coding/Java/db_optimisation_redis/src/main/resources/logs/appLog.log"
+                     filepattern="${logPath}/%d{YYYY-MM-dd HH:mm:ss}-appLog.log">
+            <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="15MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="Debug">
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    </Loggers>
+
+</Configuration>
