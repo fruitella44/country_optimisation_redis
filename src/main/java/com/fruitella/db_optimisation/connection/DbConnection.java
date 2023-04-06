@@ -10,7 +10,6 @@ import org.hibernate.cfg.Configuration;
 
 public class DbConnection {
     private static final Logger LOGGER = LogManager.getLogger(DbConnection.class);
-
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
@@ -21,10 +20,10 @@ public class DbConnection {
             configuration.addAnnotatedClass(CountryLanguage.class);
             configuration.configure();
 
-            LOGGER.debug("Mapping classes: [Country, City, CountryLanguage]");
+            LOGGER.debug("Connect to mysqlDb - hibernate.cfg.xml. Mapping classes: [Country, City, CountryLanguage]");
             return configuration.buildSessionFactory();
         } catch (Throwable exception) {
-            LOGGER.error("Connection false " + exception);
+            LOGGER.error("Connection fail " + exception);
             throw new ExceptionInInitializerError(exception);
         }
     }

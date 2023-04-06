@@ -27,17 +27,14 @@ public class CityService {
     }
 
     private List<City> getItems(int offset, int limit) {
-        LOGGER.debug("Call cityDao getItems");
         return cityDao.getItems(offset, limit);
     }
 
     private int getTotalCount() {
-        LOGGER.debug("Call cityDao getTotalCount");
         return cityDao.getTotalCount();
     }
 
     private City getById(Integer cityId) {
-        LOGGER.debug("Call cityDao getById");
         return cityDao.getById(cityId);
     }
 
@@ -46,14 +43,15 @@ public class CityService {
 
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-
             LOGGER.debug("fetchData. Start transaction");
+
             int totalCount = getTotalCount();
+            LOGGER.debug("Call getTotalCount. Added step increment");
 
             for (int i = 0; i < totalCount; i += step) {
                 getAllCities.addAll(getItems(i, step));
             }
-            LOGGER.debug("Call service method. Added step increment");
+            LOGGER.debug("Call getItems. Added step increment");
 
             session.getTransaction().commit();
             LOGGER.debug("fetchData. Commit transaction");
@@ -70,6 +68,8 @@ public class CityService {
                 City city = getById(id);
                 Set<CountryLanguage> languages = city.getCountry().getLanguages();
             }
+
+            LOGGER.debug("Call getById");
 
             session.getTransaction().commit();
             LOGGER.debug("testMysqlData. Commit transaction");

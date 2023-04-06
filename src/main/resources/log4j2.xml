@@ -6,15 +6,40 @@
                      filepattern="${logPath}/%d{YYYY-MM-dd HH:mm:ss}-appLog.log">
             <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
             <Policies>
-                <SizeBasedTriggeringPolicy size="15MB" />
+                <SizeBasedTriggeringPolicy size="10MB" />
             </Policies>
-            <DefaultRolloverStrategy max="30" />
+            <DefaultRolloverStrategy max="10" />
         </RollingFile>
     </Appenders>
+
     <Loggers>
-        <Root level="Debug">
+        <Logger name="org.hibernate" level="ERROR">
             <AppenderRef ref="RollingFile" />
-        </Root>
+        </Logger>
+
+        <Logger name="io.lettuce.core" level="ERROR">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+
+        <Logger name="com.fruitella.db_optimisation.connection.DbConnection" level="DEBUG">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+
+        <Logger name="com.fruitella.db_optimisation.connection.RedisConnection" level="DEBUG">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+
+        <Logger name="com.fruitella.db_optimisation.DAO" level="DEBUG">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+
+        <Logger name="com.fruitella.db_optimisation.service" level="DEBUG">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+
+        <Logger name="com.fruitella.db_optimisation.Main" level="DEBUG">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
     </Loggers>
 
 </Configuration>
