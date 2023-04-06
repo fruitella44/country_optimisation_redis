@@ -31,10 +31,11 @@ public class Main {
         LOGGER.debug("Load data from db with step: [" + STEP + "]");
 
         List<CityCountry> preparedData = redisService.transformData(allCities);
-        LOGGER.debug("Parsing with json format");
+        LOGGER.debug("Mapping entities.Parsing with json format");
         redisService.pushToRedis(preparedData);
+        LOGGER.debug("Push data to redis");
         DbConnection.getSessionFactory().getCurrentSession().close();
-        LOGGER.debug("Push data to Redis. Close currentDataBaseConnection.");
+        LOGGER.debug("Close currentDataBaseConnection");
 
         long startRedis = System.currentTimeMillis();
         redisService.testRedisData(RANDOM_CITES);

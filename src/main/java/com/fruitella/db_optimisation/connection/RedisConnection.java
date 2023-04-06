@@ -13,7 +13,7 @@ public class RedisConnection {
     private static final RedisClient redisClient = getConnection();
 
     private static RedisClient getConnection() throws RedisConnectionException {
-        LOGGER.debug("Connect to Redis with: " + REDIS_URL + " " + REDIS_PORT);
+        LOGGER.debug(String.format("Connect to Redis with: [url-%s, port-%d]", REDIS_URL, REDIS_PORT));
         return RedisClient.create(RedisURI.create(REDIS_URL, REDIS_PORT));
     }
 
